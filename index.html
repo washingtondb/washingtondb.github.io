@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>For My Special Friend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and Base Styles */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe6f2, #fff5f8);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Container Styles */
+    .container {
+      width: 500%;
+      height: 100vh;
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      position: relative;
+    }
+
+    .slide {
+      width: 20%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: linear-gradient(45deg, #ffe6f2, #fff0f5);
+      flex-shrink: 0;
+      padding: 20px;
+    }
+
+    /* Message Card Styles */
+    .message {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(255, 102, 179, 0.2);
+      max-width: 600px;
+      width: 90%;
+      margin: 20px auto;
+      text-align: center;
+      position: relative;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .message h1 {
+      color: #ff3385;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .message h2 {
+      color: #ff3385;
+      font-size: 2em;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .message p {
+      color: #666;
+      font-size: 1.2em;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Picture Container Styles */
+    .picture-container {
+      width: 300px;
+      height: 300px;
+      margin: 30px auto;
+      position: relative;
+    }
+
+    .animated-picture {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 8px solid white;
+      box-shadow: 0 8px 32px rgba(255, 102, 179, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Navigation and Controls */
+    .navigation {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 1000;
+    }
+
+    .navigation button {
+      padding: 15px 40px;
+      background: linear-gradient(45deg, #ff66b3, #ff1a8c);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 102, 179, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .navigation button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 102, 179, 0.4);
+    }
+
+    .navigation button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Slide Indicators */
+    .slide-indicator {
+      position: fixed;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 1000;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 102, 179, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: #ff66b3;
+      transform: scale(1.2);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 6px;
+      background: rgba(255, 179, 217, 0.3);
+      border-radius: 3px;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .progress {
+      height: 100%;
+      background: linear-gradient(90deg, #ff0066, #ff66b3);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* Animations */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Start Screen */
+    .start-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      cursor: pointer;
+    }
+
+    .start-box {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(255, 102, 179, 0.2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .message {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .message h1 {
+        font-size: 1.8em;
+      }
+
+      .message h2 {
+        font-size: 1.5em;
+      }
+
+      .message p {
+        font-size: 1em;
+      }
+
+      .picture-container {
+        width: 200px;
+        height: 200px;
+        margin: 20px auto;
+      }
+
+      .navigation button {
+        padding: 12px 30px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .message {
+        padding: 15px;
+      }
+
+      .message h1 {
+        font-size: 1.5em;
+      }
+
+      .message h2 {
+        font-size: 1.2em;
+      }
+
+      .message p {
+        font-size: 0.9em;
+      }
+
+      .picture-container {
+        width: 150px;
+        height: 150px;
+      }
+
+      .navigation button {
+        padding: 10px 25px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="startScreen" class="start-screen">
+    <div class="start-box">
+      <h1>A Special Message</h1>
+      <p>Click to Begin</p>
+    </div>
+  </div>
+
+  <div class="progress-bar" id="progressBar" style="display: none;">
+    <div class="progress"></div>
+  </div>
+
+  <div class="container" id="container" style="display: none;">
+    <!-- Slide 1 -->
+    <div class="slide">
+      <div class="message">
+        <h1>To My Dearest Friend</h1>
+        <p>Please take a moment to view this special message...</p>
+      </div>
+    </div>
+
+
+
+    <!-- Slide 2: Smile -->
+    <div class="slide slide2-design">
+      <div class="message">
+        <div class="corner-decoration top-left">🌸</div>
+        <div class="corner-decoration top-right">🌸</div>
+        <h2>Every time wey you just smile,
+        </h2>
+        <p>E be like say I don win jackpot.<br>
+          E con sweet my belle like jollof rice. <br>
+          Ahh, your smile be like igbo fresh palm wine sweet<br>
+          See eh Na you be sugar wey life no resist.</p>
+        <div class="picture-container">
+          <img src="IMG_6376.PNG" class="animated-picture" alt="Her Beautiful Smile">
+        </div>
+        <div class="corner-decoration bottom-left">🌸</div>
+        <div class="corner-decoration bottom-right">🌸</div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Beautiful -->
+    <div class="slide slide3-design">
+      <div class="hearts" id="hearts3"></div>
+      <div class="message">
+        <div class="corner-decoration top-left">✨</div>
+        <div class="corner-decoration top-right">✨</div>
+        <h2>You Fine Inside and Out</h2>
+        <p>Your beauty shines so bright and true,<br>
+          In everything you say and do,<br>
+          A precious soul, through and through,<br>
+          My admiration forever grew.</p>
+        <div class="picture-container">
+          <img src="alero3.png" class="animated-picture" alt="Her Beautiful Smile">
+        </div>
+        <div class="corner-decoration bottom-left">✨</div>
+        <div class="corner-decoration bottom-right">✨</div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Conversation -->
+    <div class="slide slide4-design">
+      <div class="message">
+        <div class="corner-decoration top-left">💝</div>
+        <div class="corner-decoration top-right">💝</div>
+        <h2>Make you head swell</h2>
+        <p>Cause you know book and Devops wella<br>
+          Your future bright no be lie<br>
+          Just dey keep the fire burning <br>
+          You be star.</p>
+        <div class="picture-container">
+          <img src="alero1.png" class="animated-picture" alt="Her Beautiful Smile">
+        </div>
+        <div style="font-size: 40px">💬❤️</div>
+        <div class="corner-decoration bottom-left">💝</div>
+        <div class="corner-decoration bottom-right">💝</div>
+      </div>
+    </div>
+
+
+    <div class="slide">
+      <div class="message">
+        <h2>Happy Val Boss ❤️‍🔥</h2>
+
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+  <!-- Slide 2 -->
+
+
+  <div class="slide-indicator">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+  <div class="navigation">
+    <button id="prevButton" onclick="prevSlide()" disabled>Previous</button>
+    <button id="nextButton" onclick="nextSlide()">Next</button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 5; // Update this based on your total number of slides
+    const container = document.getElementById('container');
+    const progress = document.querySelector('.progress');
+    const startScreen = document.getElementById('startScreen');
+    const progressBar = document.getElementById('progressBar');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+    const dots = document.querySelectorAll('.dot');
+
+    // Start screen handler
+    startScreen.addEventListener('click', () => {
+      startScreen.style.display = 'none';
+      container.style.display = 'flex';
+      progressBar.style.display = 'block';
+      updateAll();
+    });
+
+    // Update functions
+    function updateAll() {
+      updateSlide();
+      updateButtons();
+      updateDots();
+      updateProgress();
+    }
+
+    function updateSlide() {
+      container.style.transform = `translateX(-${currentSlide * 20}%)`;
+    }
+
+    function updateProgress() {
+      progress.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+    }
+
+    function updateButtons() {
+      prevButton.disabled = currentSlide === 0;
+      nextButton.disabled = currentSlide === totalSlides - 1;
+    }
+
+    function updateDots() {
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    // Navigation functions
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateAll();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateAll();
+      }
+    }
+
+    // Dot navigation
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentSlide = index;
+        updateAll();
+      });
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Touch navigation
+    let startX = 0;
+    let isDragging = false;
+
+    container.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    });
+
+    container.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const currentX = e.touches[0].clientX;
+      const diff = startX - currentX;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+        isDragging = false;
+      }
+    });
+
+    container.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Initialize
+    updateAll();
+  </script>
+</body>
+
+</html>
